@@ -1,11 +1,13 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import Giscus from '~/components/integrations/Giscus.astro';
 
 import type { MetaData } from '~/types';
 
 export interface Props {
   frontmatter: {
     title?: string;
+    comments?: boolean; // 可选：单篇文章里用 comments: false 关闭评论
   };
 }
 
@@ -18,11 +20,17 @@ const metadata: MetaData = {
 
 <Layout metadata={metadata}>
   <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-4xl">
-    <h1 class="font-bold font-heading text-4xl md:text-5xl leading-tighter tracking-tighter">{frontmatter.title}</h1>
+    <h1 class="font-bold font-heading text-4xl md:text-5xl leading-tighter tracking-tighter">
+      {frontmatter.title}
+    </h1>
+
     <div
       class="mx-auto prose prose-lg max-w-4xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8"
     >
       <slot />
     </div>
   </section>
+
+  {/* 评论区（默认开启；在文章 frontmatter 里设置 comments: false 可关闭） */}
+  {frontmatter?.comments !== false ? <Giscus /> : null}
 </Layout>
