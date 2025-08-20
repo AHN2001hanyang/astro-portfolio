@@ -1,10 +1,15 @@
 ---
-import favIcon from '~/assets/favicons/favicon.ico';
-import favIconSvg from '~/assets/favicons/favicon.svg';
-import appleTouchIcon from '~/assets/favicons/apple-touch-icon.png';
+/**
+ * 使用 BASE_URL（带结尾斜杠）来生成带 base 的资源地址，
+ * 适配 GitHub Pages（/astro-portfolio/）以及本地 dev。
+ */
+const BASE = import.meta.env.BASE_URL; // 例如 "/astro-portfolio/" 或 "/"
+const iconHref = `${BASE}favicon.svg`;
+const manifestHref = `${BASE}site.webmanifest`;
 ---
 
-<link rel="shortcut icon" href={favIcon} />
-<link rel="icon" type="image/svg+xml" href={favIconSvg.src} />
-<link rel="mask-icon" href={favIconSvg.src} color="#8D46E7" />
-<link rel="apple-touch-icon" sizes="180x180" href={appleTouchIcon.src} />
+<!-- Favicon（SVG） -->
+<link rel="icon" href={iconHref} type="image/svg+xml" />
+
+<!-- PWA manifest（带 base） -->
+<link rel="manifest" href={manifestHref} />
