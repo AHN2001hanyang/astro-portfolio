@@ -1,12 +1,10 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getPermalink, getAsset } from './utils/permalinks';
 
 export const headerData = {
   links: [
-    { text: 'Home', href: getPermalink('/') },
-    { text: 'Projects', href: getPermalink('/projects') },
-    { text: 'Blog', href: getBlogPermalink() },
-    { text: 'Contact', href: 'mailto:jaehyung9483@gmail.com' },
-
+    { text: 'About', href: getPermalink('/#about') },
+    { text: 'Projects', href: getPermalink('/#projects') },
+    { text: 'Contact', href: getPermalink('/#contact') },
     {
       text: '🌐 Language',
       links: [
@@ -24,18 +22,9 @@ export const footerData = {
     {
       title: 'Site',
       links: [
-        { text: 'Home', href: getPermalink('/') },
-        { text: 'Projects', href: getPermalink('/projects') },
-        { text: 'Blog', href: getBlogPermalink() },
-        { text: 'Contact', href: 'mailto:jaehyung9483@gmail.com' },
-      ],
-    },
-    {
-      title: 'Content',
-      links: [
-        { text: 'Categories', href: getPermalink('/category') },
-        { text: 'Tags', href: getPermalink('/tag') },
-        { text: 'RSS', href: getAsset('/rss.xml') },
+        { text: 'About', href: getPermalink('/#about') },
+        { text: 'Projects', href: getPermalink('/#projects') },
+        { text: 'Contact', href: getPermalink('/#contact') },
       ],
     },
     {
@@ -46,17 +35,14 @@ export const footerData = {
         { text: 'English', href: getPermalink('/en/') },
       ],
     },
+    {
+      title: 'Feeds',
+      links: [{ text: 'RSS', href: getAsset('/rss.xml') }],
+    },
   ],
-  secondaryLinks: [
-    { text: 'Terms', href: getPermalink('/terms') },
-    { text: 'Privacy Policy', href: getPermalink('/privacy') },
-  ],
+  secondaryLinks: [],
   socialLinks: [
-    { ariaLabel: 'X', icon: 'tabler:brand-x', href: '#' },
-    { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: '#' },
-    { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: '#' },
-    { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
     { ariaLabel: 'GitHub', icon: 'tabler:brand-github', href: 'https://github.com/AHN2001hanyang' },
   ],
-  footNote: `© 2025 Jae AHN · Built with Astro & Tailwind · Deployed on GitHub Pages.`,
+  footNote: `© 2025 Jae AHN · One-Page Portfolio`,
 };
