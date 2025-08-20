@@ -3,7 +3,7 @@ import { Icon } from 'astro-icon/components';
 import type { Project } from '~/data/projects';
 import { projects } from '~/data/projects';
 
-/** 由入口页传入的多语言词典 */
+/** 入口页传入：多语言词典 */
 const { t } = Astro.props as { t: any };
 
 const all: Project[] = projects;
@@ -64,16 +64,16 @@ const all: Project[] = projects;
     <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {all.map((p) => (
         <article class="card hover:shadow-lg reveal">
-          <!-- 封面或图标 -->
+          <!-- 封面 或 图标块（有封面时可点击放大预览） -->
           {p.cover ? (
-            <div class="aspect-video w-full overflow-hidden">
+            <button class="cover-btn group/cover relative block aspect-video w-full overflow-hidden" aria-label={`Open ${p.title} cover`}>
               <img
                 src={p.cover}
                 alt={p.title}
-                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover/cover:scale-[1.02]"
                 loading="lazy"
               />
-            </div>
+            </button>
           ) : (
             <div class="flex h-40 w-full items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-800">
               <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg">
@@ -142,6 +142,17 @@ const all: Project[] = projects;
       <Icon name="tabler:arrow-up" class="h-5 w-5" />
     </a>
   </div>
+
+  <!-- Lightbox 预览层 -->
+  <div id="lightbox" class="lightbox hidden">
+    <div class="lightbox-backdrop"></div>
+    <div class="lightbox-stage">
+      <img id="lightbox-img" alt="Preview" class="lightbox-img" />
+      <button id="lightbox-close" class="btn-fab lightbox-close" aria-label="Close preview" title="Close">
+        <Icon name="tabler:x" class="h-5 w-5" />
+      </button>
+    </div>
+  </div>
 </main>
 
 <style>
@@ -151,60 +162,81 @@ const all: Project[] = projects;
   .card-glass { @apply relative rounded-3xl border bg-gradient-to-b from-white/70 to-white/30 dark:from-slate-900/70 dark:to-slate-900/30 shadow-sm backdrop-blur; }
   .btn-fab { @apply inline-flex h-10 w-10 items-center justify-center rounded-full border bg-white/80 backdrop-blur hover:shadow transition dark:bg-slate-900/80; }
 
-  /* 出场动画（Intersection Observer 控制） */
+  /* 出场动画 */
   .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
   .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Lightbox */
+  .lightbox { @apply fixed inset-0 z-[60]; }
+  .lightbox.hidden { display: none; }
+  .lightbox-backdrop { @apply absolute inset-0 bg-black/70 backdrop-blur-sm; }
+  .lightbox-stage { @apply relative z-10 flex h-full w-full items-center justify-center p-4; }
+  .lightbox-img { @apply max-h-[85vh] max-w-[90vw] rounded-xl shadow-2xl; }
+  .lightbox-close { @apply absolute top-4 right-4; }
 </style>
 
-<!-- 交互逻辑：ScrollSpy（已在上一步）、滚动进度、显现动画、主题开关 -->
+<!-- 交互：进度条、显现动画、主题切换、Lightbox -->
 <script>
-  // ===== 1) 滚动进度条 =====
+  // ===== 滚动进度条 =====
   const progress = document.getElementById('scroll-progress');
   const updateProgress = () => {
     const h = document.documentElement;
-    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
     progress.style.width = (scrolled * 100) + '%';
   };
   document.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
 
-  // ===== 2) 显现动画 =====
+  // ===== 显现动画 =====
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-  // ===== 3) 主题切换（持久化） =====
+  // ===== 主题切换（持久化）=====
   const root = document.documentElement;
   const btn = document.getElementById('theme-toggle');
   const sun = document.getElementById('theme-icon-sun');
   const moon = document.getElementById('theme-icon-moon');
-
   const applyTheme = (mode) => {
-    if (mode === 'dark') root.classList.add('dark');
-    else root.classList.remove('dark');
+    if (mode === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
     localStorage.setItem('theme', mode);
-    // 切换图标
     const isDark = mode === 'dark';
     sun.classList.toggle('hidden', isDark);
     moon.classList.toggle('hidden', !isDark);
   };
-
-  // 初始：localStorage > 系统偏好
   const saved = localStorage.getItem('theme');
   if (saved) applyTheme(saved);
   else applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-  // 跟随系统变化（如果用户没手动切换过）
-  const mql = window.matchMedia('(prefers-color-scheme: dark)');
-  mql.addEventListener('change', (e) => {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
     const userSet = localStorage.getItem('theme');
     if (!userSet) applyTheme(e.matches ? 'dark' : 'light');
   });
-
-  // 点击切换
   btn?.addEventListener('click', () => {
     const isDark = root.classList.contains('dark');
     applyTheme(isDark ? 'light' : 'dark');
   });
+
+  // ===== Lightbox 预览 =====
+  const lightbox = document.getElementById('lightbox');
+  const imgEl = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+
+  // 打开：点击带封面的按钮，取其子 <img> 的实际 URL（确保是构建后的路径）
+  document.querySelectorAll('.cover-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      if (!img) return;
+      imgEl.src = img.currentSrc || img.src;
+      lightbox.classList.remove('hidden');
+    });
+  });
+
+  // 关闭规则：点击关闭按钮、点击背景、按 Esc
+  const closeLightbox = () => { lightbox.classList.add('hidden'); imgEl.src = ''; };
+  closeBtn?.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target.classList.contains('lightbox-backdrop')) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 </script>
