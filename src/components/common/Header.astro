@@ -1,0 +1,115 @@
+---
+import { headerData } from '~/navigation';
+
+const { links, actions } = headerData;
+---
+
+<header id="site-header" class="sticky top-0 z-40 transition-all">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- 透明 + 毛玻璃 + 圆角容器 -->
+    <div class="h-14 flex items-center justify-between rounded-2xl border border-transparent
+                bg-white/0 px-3 backdrop-blur transition-all dark:bg-transparent">
+      <!-- Brand -->
+      <a href="/" class="flex items-center gap-2 font-semibold">
+        <span class="inline-block h-2.5 w-2.5 rounded-full bg-blue-600"></span>
+        <span>Jae AHN</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6">
+        {
+          links.map((item) =>
+            item.links ? (
+              <div class="relative group">
+                <button class="nav-link inline-flex items-center gap-1">
+                  {item.text}
+                  <svg class="h-3 w-3 opacity-60 group-hover:opacity-100" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path d="M5.25 7.5l4.5 5 4.5-5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <div
+                  class="invisible absolute left-0 top-[110%] min-w-[160px] rounded-xl border bg-white/90 p-2 opacity-0 shadow-lg
+                         backdrop-blur transition group-hover:visible group-hover:opacity-100 dark:bg-slate-900/90">
+                  {item.links.map((sub) => (
+                    <a href={sub.href} class="block rounded-lg px-3 py-2 text-sm opacity-80 hover:opacity-100">{sub.text}</a>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <a href={item.href} class="nav-link">{item.text}</a>
+            )
+          )
+        }
+      </nav>
+
+      <!-- Desktop Actions -->
+      <div class="hidden md:flex items-center gap-3">
+        {actions?.map((a) => (
+          <a href={a.href} target={a.target ?? '_self'}
+             class="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:shadow">
+            {a.text}
+          </a>
+        ))}
+      </div>
+
+      <!-- Mobile Burger -->
+      <button id="hamburger" class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu"
+       class="md:hidden fixed inset-x-0 top-14 z-30 hidden border-t bg-white/95 p-4 backdrop-blur dark:bg-slate-900/95">
+    <nav class="grid gap-2">
+      {
+        links.map((item) =>
+          item.links ? (
+            <details>
+              <summary class="nav-link cursor-pointer">{item.text}</summary>
+              <div class="ml-3 mt-1 grid">
+                {item.links.map((sub) => (
+                  <a href={sub.href} class="nav-link py-1">{sub.text}</a>
+                ))}
+              </div>
+            </details>
+          ) : (
+            <a href={item.href} class="nav-link py-2">{item.text}</a>
+          )
+        )
+      }
+      <div class="mt-2 flex gap-2">
+        {actions?.map((a) => (
+          <a href={a.href} target={a.target ?? '_self'}
+             class="inline-flex items-center justify-center rounded-xl border px-3 py-2 text-sm">
+            {a.text}
+          </a>
+        ))}
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav-link { @apply text-sm opacity-80 hover:opacity-100 transition; }
+
+  /* 滚动后加背景/阴影/边框（毛玻璃保持） */
+  #site-header.is-scrolled .rounded-2xl {
+    @apply border-slate-200/60 bg-white/70 shadow-sm dark:border-white/10 dark:bg-slate-900/70;
+  }
+</style>
+
+<script>
+  // 1) 滚动时给 header 加 is-scrolled（增强背景与阴影）
+  const header = document.getElementById('site-header');
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 2) 移动端菜单
+  const burger = document.getElementById('hamburger');
+  const mobile = document.getElementById('mobile-menu');
+  burger?.addEventListener('click', () => mobile?.classList.toggle('hidden'));
+  mobile?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => mobile?.classList.add('hidden')));
+</script>
