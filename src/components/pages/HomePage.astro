@@ -3,14 +3,14 @@ import { Icon } from 'astro-icon/components';
 import type { Project } from '~/data/projects';
 import { projects } from '~/data/projects';
 
-/** 由外层传入：各语言的文案 */
+/** 由入口页传入的多语言词典 */
 const { t } = Astro.props as { t: any };
 
 const all: Project[] = projects;
 ---
 
 <style is:global>
-  html { scroll-behavior: smooth; }        /* 平滑滚动 */
+  html { scroll-behavior: smooth; } /* 平滑滚动 */
 </style>
 
 <main id="top" class="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
@@ -25,21 +25,18 @@ const all: Project[] = projects;
     <h1 class="font-bold font-heading text-4xl md:text-5xl tracking-tight">
       {t.hero.name} · {t.hero.stack}
     </h1>
-    <p class="mt-4 text-muted-foreground">
-      {t.hero.subtitle}
-    </p>
+    <p class="mt-4 text-muted-foreground">{t.hero.subtitle}</p>
 
     <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-      <a href="#projects" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">{t.btn.projects}</a>
-      <a href={t.links.github} target="_blank" rel="noopener"
-         class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">GitHub</a>
-      <a href="#contact" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">{t.btn.contact}</a>
+      <a href="#projects" class="anchor-btn"> {t.btn.projects} </a>
+      <a href={t.links.github} target="_blank" rel="noopener" class="anchor-btn"> GitHub </a>
+      <a href="#contact" class="anchor-btn"> {t.btn.contact} </a>
     </div>
   </section>
 
   <!-- About -->
   <section id="about" class="mx-auto mt-16 max-w-4xl scroll-mt-24">
-    <div class="relative rounded-3xl border bg-gradient-to-b from-white/70 to-white/30 dark:from-slate-900/70 dark:to-slate-900/30 p-6 sm:p-8 shadow-sm backdrop-blur">
+    <div class="card-glass p-6 sm:p-8">
       <div class="grid gap-6 sm:grid-cols-[96px,1fr]">
         <img src="~/assets/images/default.png" alt="Avatar"
              class="h-24 w-24 rounded-2xl object-cover ring-1 ring-black/5 dark:ring-white/10" />
@@ -48,7 +45,7 @@ const all: Project[] = projects;
           <p class="mt-2 text-sm text-muted-foreground">{t.about.desc}</p>
           <div class="mt-4 flex flex-wrap gap-2">
             {t.about.tags.map((x: string) => (
-              <span class="rounded-full border px-2 py-0.5 text-xs">{x}</span>
+              <span class="chip">{x}</span>
             ))}
           </div>
         </div>
@@ -63,13 +60,11 @@ const all: Project[] = projects;
 
     <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {all.map((p) => (
-        <article class="group relative overflow-hidden rounded-2xl border bg-white/60 p-0 shadow-sm transition hover:shadow-lg dark:bg-slate-900/60">
-          <div class="pointer-events-none absolute inset-0 -z-10 rounded-2xl opacity-0 transition group-hover:opacity-100"
-               style="background: linear-gradient(135deg, rgba(59,130,246,.45), rgba(147,51,234,.45)); filter: blur(16px);"></div>
-
+        <article class="card hover:shadow-lg">
+          <!-- 封面或图标 -->
           {p.cover ? (
             <div class="aspect-video w-full overflow-hidden">
-              <img src={p.cover} alt={p.title} class="h-full w-full object-cover" loading="lazy" />
+              <img src={p.cover} alt={p.title} class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" loading="lazy" />
             </div>
           ) : (
             <div class="flex h-40 w-full items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-800">
@@ -79,15 +74,14 @@ const all: Project[] = projects;
             </div>
           )}
 
+          <!-- 内容 -->
           <div class="p-6">
             <h3 class="font-semibold">{p.title}</h3>
             <p class="mt-2 text-sm text-muted-foreground">{p.summary}</p>
 
             {p.tags && p.tags.length ? (
               <div class="mt-3 flex flex-wrap gap-2">
-                {p.tags.map((t) => (
-                  <span class="rounded-full border px-2 py-0.5 text-xs">{t}</span>
-                ))}
+                {p.tags.map((t) => <span class="chip">{t}</span>)}
               </div>
             ) : null}
 
@@ -99,6 +93,18 @@ const all: Project[] = projects;
                 </a>
               ))}
             </div>
+
+            {p.repo ? (
+              <div class="mt-3">
+                <a href={`https://github.com/${p.repo}/stargazers`} target="_blank" rel="noopener">
+                  <img
+                    src={`https://img.shields.io/github/stars/${p.repo}?style=social`}
+                    alt="GitHub stars"
+                    loading="lazy"
+                  />
+                </a>
+              </div>
+            ) : null}
           </div>
         </article>
       ))}
@@ -110,12 +116,40 @@ const all: Project[] = projects;
     <h2 class="text-2xl font-bold tracking-tight">{t.contact.title}</h2>
     <p class="mt-2 text-muted-foreground">{t.contact.subtitle}</p>
     <div class="mt-4 flex items-center justify-center gap-3">
-      <a href={t.links.email} class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">Email</a>
-      <a href={t.links.github} target="_blank" rel="noopener"
-         class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">GitHub</a>
+      <a href={t.links.email} class="anchor-btn">Email</a>
+      <a href={t.links.github} target="_blank" rel="noopener" class="anchor-btn">GitHub</a>
     </div>
     <div class="mt-10">
       <a href="#top" class="text-sm underline opacity-70 hover:opacity-100">{t.contact.backToTop}</a>
     </div>
   </section>
 </main>
+
+<style>
+  .anchor-btn { @apply inline-flex items-center rounded-xl border px-4 py-2 hover:shadow transition; }
+  .chip { @apply rounded-full border px-2 py-0.5 text-xs; }
+  .card { @apply group relative overflow-hidden rounded-2xl border bg-white/60 p-0 shadow-sm transition dark:bg-slate-900/60; }
+  .card-glass { @apply relative rounded-3xl border bg-gradient-to-b from-white/70 to-white/30 dark:from-slate-900/70 dark:to-slate-900/30 shadow-sm backdrop-blur; }
+</style>
+
+<!-- ScrollSpy：根据视口高亮导航锚点 -->
+<script>
+  const sections = ['about','projects','contact'];
+  const linkMap = new Map();
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    const id = a.getAttribute('href')?.slice(1);
+    if (id && sections.includes(id)) {
+      if (!linkMap.has(id)) linkMap.set(id, []);
+      linkMap.get(id).push(a);
+    }
+  });
+  const setActive = (id) => {
+    linkMap.forEach((arr, key) => {
+      arr.forEach((a) => a.classList.toggle('text-blue-600', key === id));
+    });
+  };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0.01 });
+  sections.forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+</script>
