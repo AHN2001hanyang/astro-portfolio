@@ -1,2 +1,4 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Sitemap: https://ahn2001hanyang.github.io/astro-portfolio/sitemap-index.xml
