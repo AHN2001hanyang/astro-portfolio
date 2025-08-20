@@ -5,22 +5,18 @@ export const headerData = {
     { text: 'Home', href: getPermalink('/') },
     { text: 'Projects', href: getPermalink('/projects') },
     { text: 'Blog', href: getBlogPermalink() },
-    { text: 'About', href: getPermalink('/about') },
-    { text: 'Contact', href: getPermalink('/contact') },
+    { text: 'Contact', href: 'mailto:jaehyung9483@gmail.com' },
 
-    // 🌐 Language menu（默认语言 ko 无前缀，其它语言带前缀）
     {
       text: '🌐 Language',
       links: [
-        { text: '한국어', href: getPermalink('/') },   // default locale (ko)
-        { text: '中文', href: getPermalink('/zh/') },  // Chinese
-        { text: 'English', href: getPermalink('/en/') }, // English
+        { text: '한국어', href: getPermalink('/') },
+        { text: '中文', href: getPermalink('/zh/') },
+        { text: 'English', href: getPermalink('/en/') },
       ],
     },
   ],
-  actions: [
-    { text: 'GitHub', href: 'https://github.com/AHN2001hanyang', target: '_blank' },
-  ],
+  actions: [{ text: 'GitHub', href: 'https://github.com/AHN2001hanyang', target: '_blank' }],
 };
 
 export const footerData = {
@@ -31,8 +27,7 @@ export const footerData = {
         { text: 'Home', href: getPermalink('/') },
         { text: 'Projects', href: getPermalink('/projects') },
         { text: 'Blog', href: getBlogPermalink() },
-        { text: 'About', href: getPermalink('/about') },
-        { text: 'Contact', href: getPermalink('/contact') },
+        { text: 'Contact', href: 'mailto:jaehyung9483@gmail.com' },
       ],
     },
     {

@@ -24,20 +24,43 @@ const featured = projects.filter((p) => p.featured).slice(0, 3);
         <a href="/projects/" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
           프로젝트 보기
         </a>
-        <a href="/about/" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
-          소개
-        </a>
         <a href="https://github.com/AHN2001hanyang" target="_blank" rel="noopener"
            class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
           GitHub
         </a>
+        <a href="mailto:jaehyung9483@gmail.com"
+           class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
+          Contact
+        </a>
       </div>
     </section>
 
-    <!-- Featured Projects（来自数据文件，仅显示 featured=true 的项目） -->
+    <!-- Intro / About（取代 /about 页面） -->
+    <section id="about" class="mx-auto mt-16 max-w-4xl">
+      <div class="relative rounded-3xl border bg-gradient-to-b from-white/60 to-white/20 dark:from-slate-900/60 dark:to-slate-900/20 p-6 sm:p-8 shadow-sm backdrop-blur">
+        <div class="grid gap-6 sm:grid-cols-[96px,1fr]">
+          <img src="~/assets/images/default.png" alt="Avatar"
+               class="h-24 w-24 rounded-2xl object-cover ring-1 ring-black/5 dark:ring-white/10" />
+          <div>
+            <h2 class="text-2xl font-semibold tracking-tight">Hello! 안녕하세요 👋</h2>
+            <p class="mt-2 text-sm text-muted-foreground">
+              실용적인 엔지니어링을 좋아합니다. AI 응용 · 웹/백엔드 · 데스크톱 자동화에 관심이 많고,
+              작은 단위로 만들고 빠르게 배포하며 글로 기록합니다.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="rounded-full border px-2 py-0.5 text-xs">Astro</span>
+              <span class="rounded-full border px-2 py-0.5 text-xs">Tailwind</span>
+              <span class="rounded-full border px-2 py-0.5 text-xs">Python / JS</span>
+              <span class="rounded-full border px-2 py-0.5 text-xs">GitHub Actions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects（从数据中读取） -->
     <section class="mx-auto mt-16 max-w-6xl">
       <h2 class="text-2xl font-bold tracking-tight">대표 프로젝트</h2>
-
       <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {featured.map((p) => (
           <article class="rounded-2xl border p-6 hover:shadow-md">

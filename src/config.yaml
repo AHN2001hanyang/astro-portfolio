@@ -1,17 +1,10 @@
 site:
-  # 站点显示名称
   name: "Jae AHN • Portfolio"
-  # 线上地址（项目页）
   site: "https://AHN2001hanyang.github.io/astro-portfolio/"
-  # 仓库前缀（务必与 astro.config.ts 一致）
   base: "/astro-portfolio/"
-  # 关键：生成带尾斜杠的链接，避免 404
   trailingSlash: true
-
-  # 如无需要，保持为空
   googleSiteVerificationId: ''
 
-# Default SEO metadata
 metadata:
   title:
     default: "Jae AHN — Software & AI Projects"
@@ -32,46 +25,42 @@ metadata:
     site: ""
     cardType: summary_large_image
 
+# ✅ 这里设为韩文
 i18n:
-  language: en
+  language: ko
   textDirection: ltr
 
 apps:
   blog:
     isEnabled: true
     postsPerPage: 6
-
     post:
       isEnabled: true
-      permalink: "/%slug%" # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      permalink: "/%slug%"
       robots:
         index: true
-
     list:
       isEnabled: true
-      pathname: "blog" # 博客主页路径（/blog）
+      pathname: "blog"
       robots:
         index: true
-
     category:
       isEnabled: true
-      pathname: "category" # 分类页路径（/category/<name>）
+      pathname: "category"
       robots:
         index: true
-
     tag:
       isEnabled: true
-      pathname: "tag" # 标签页路径（/tag/<tag>）
+      pathname: "tag"
       robots:
         index: false
-
     isRelatedPostsEnabled: true
     relatedPostsCount: 4
 
 analytics:
   vendors:
     googleAnalytics:
-      id: null # 如使用 GA4，填入 "G-XXXXXXXXXX"
+      id: null
 
 ui:
-  theme: "system" # "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: "system"
