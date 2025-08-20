@@ -17,10 +17,6 @@ import { ClientRouter } from 'astro:transitions';
 
 import type { MetaData as MetaDataType } from '~/types';
 
-/* ✅ 关键修复：用 ?url 让资源地址自动包含 base（/astro-portfolio/） */
-import faviconUrl from '/favicon.svg?url';
-import manifestUrl from '/site.webmanifest?url';
-
 export interface Props {
   metadata?: MetaDataType;
 }
@@ -33,16 +29,12 @@ const { language, textDirection } = I18N;
 <html lang={language} dir={textDirection} class="2xl:text-[20px]">
   <head>
     <CommonMeta />
-    <Favicons />
+    <Favicons /> <!-- favicon & manifest 由此组件用 ?url 输出 -->
     <CustomStyles />
     <ApplyColorMode />
     <Metadata {...metadata} />
     <SiteVerification />
 
-    <!-- 显式挂载 SVG favicon / PWA manifest / theme-color
-         - 通过 ?url 导入，自动拼接 base，修复 “Request URLs for public/ assets must also include your base” 报错 -->
-    <link rel="icon" href={faviconUrl} type="image/svg+xml" />
-    <link rel="manifest" href={manifestUrl} />
     <meta name="theme-color" content="#0ea5e9" />
 
     <Analytics />
@@ -53,7 +45,6 @@ const { language, textDirection } = I18N;
 
   <body class="antialiased text-default bg-page tracking-tight">
     <slot />
-
     <BasicScripts />
   </body>
 </html>
