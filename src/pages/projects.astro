@@ -1,0 +1,72 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features from '~/components/widgets/Features.astro';
+
+const metadata = {
+  title: 'Projects — Portfolio',
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="py-8 sm:py-12">
+    <div class="container">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight dark:text-white">Projects</h1>
+      <p class="mt-2 text-muted-foreground">
+        代表项目与实验：每个卡片包含简介、技术栈与链接。后续会持续更新与复盘。
+      </p>
+    </div>
+  </section>
+
+  <!-- 项目卡片区域（先用 Features 组件做 3 列卡片） -->
+  <Features
+    tagline="Selected"
+    title="Featured Projects"
+    subtitle="点击卡片了解详情或前往仓库 / 演示地址。"
+    items={[
+      {
+        title: 'SafeConvert — 文件格式转换工具',
+        description:
+          '本地运行，支持 PDF/Word/JPG/HWPX 等格式互转；批量转换、进度提示与日志记录。',
+        icon: 'tabler:files',
+        callToAction: { text: 'GitHub', href: 'https://github.com/AHN2001hanyang', target: '_blank' },
+      },
+      {
+        title: 'Unity 2048 — 安卓版',
+        description:
+          '支持离线游玩、实时分数记录、前 10000 名排行榜；计划上架 Google Play。',
+        icon: 'tabler:device-gamepad-2',
+        callToAction: { text: 'Devlog', href: '/blog', target: '_self' },
+      },
+      {
+        title: 'HeyKanb AI — 桌面语音助手',
+        description:
+          '在 Windows 上通过语音/指令控制电脑，读屏执行任务，支持中/韩双语。',
+        icon: 'tabler:microphone-2',
+        callToAction: { text: 'Overview', href: '/about', target: '_self' },
+      },
+    ]}
+  />
+
+  <!-- 可以用 Content 组件补充一段“项目说明” -->
+  <Content
+    isAfterContent
+    tagline="Notes"
+    title="收录标准与更新节奏"
+    items={[
+      { title: '可复现', description: '项目附带运行说明或 Demo，方便他人复现/试用。' },
+      { title: '工程化', description: '有清晰的目录结构、README 与脚本，便于长期维护。' },
+      { title: '复盘', description: '重要版本会写复盘文章：目标、实现、问题与改进。' },
+    ]}
+    image={{
+      src: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1974&q=80',
+      alt: 'Projects',
+    }}
+  >
+    <Fragment slot="content">
+      <p class="text-muted-foreground">
+        你可以把更多项目加入到上面的卡片列表中，或为每个项目单独创建一个详细页面（/projects/xxx）。
+      </p>
+    </Fragment>
+  </Content>
+</Layout>
