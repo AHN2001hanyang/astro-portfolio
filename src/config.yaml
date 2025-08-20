@@ -1,26 +1,21 @@
 site:
-  # 站点名称（会显示在标题/Logo 等位置）
+  # 站点显示名称
   name: "Jae AHN • Portfolio"
-  # 你的 GitHub Pages 最终访问地址（项目页模式）
-  # 如果你的 GitHub 用户名或仓库名不同，请改成：
-  #   https://<你的用户名>.github.io/<你的仓库名>/
+  # 线上地址（项目页）
   site: "https://AHN2001hanyang.github.io/astro-portfolio/"
-  # GitHub Pages 的项目页必须带仓库名前缀，例如 /astro-portfolio/
-  # 如果用用户主页（仓库名是 <username>.github.io），则改为 "/"
+  # 仓库前缀（务必与 astro.config.ts 一致）
   base: "/astro-portfolio/"
-  trailingSlash: false
+  # 关键：生成带尾斜杠的链接，避免 404
+  trailingSlash: true
 
-  # 没用到站长验证的话先留空
-  googleSiteVerificationId: null
+  # 如无需要，保持为空
+  googleSiteVerificationId: ''
 
 # Default SEO metadata
 metadata:
   title:
-    # 浏览器标签的默认标题
     default: "Jae AHN — Software & AI Projects"
-    # 其它页面会以此模板拼接标题
     template: "%s — Jae AHN"
-  # 搜索/社交分享描述（可中英双语，便于 SEO）
   description: "个人博客与项目作品集：AI、游戏、Web 开发记录与复盘 · Personal blog & portfolio covering AI, games, and web development."
   robots:
     index: true
@@ -37,7 +32,6 @@ metadata:
     site: ""
     cardType: summary_large_image
 
-# 界面语言（先保持英文；后续做多语言再调整为 zh/ko）
 i18n:
   language: en
   textDirection: ltr
@@ -49,7 +43,6 @@ apps:
 
     post:
       isEnabled: true
-      # 文章链接结构（保持简单的 /slug）
       permalink: "/%slug%" # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
       robots:
         index: true
@@ -81,5 +74,4 @@ analytics:
       id: null # 如使用 GA4，填入 "G-XXXXXXXXXX"
 
 ui:
-  # 主题跟随系统；也可设为 "light" / "dark" / "light:only" / "dark:only"
-  theme: "system"
+  theme: "system" # "system" | "light" | "dark" | "light:only" | "dark:only"
