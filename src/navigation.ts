@@ -2,13 +2,13 @@ import { getPermalink, getAsset } from './utils/permalinks';
 
 export const headerData = {
   links: [
-    { text: 'About', href: getPermalink('/#about') },
-    { text: 'Projects', href: getPermalink('/#projects') },
-    { text: 'Contact', href: getPermalink('/#contact') },
+    { text: 'About', href: '#about' },      // 纯锚点，滚动到首页分区
+    { text: 'Projects', href: '#projects' },
+    { text: 'Contact', href: '#contact' },
     {
       text: '🌐 Language',
       links: [
-        { text: '한국어', href: getPermalink('/') },
+        { text: '한국어', href: getPermalink('/') },  // 默认语言（无前缀）
         { text: '中文', href: getPermalink('/zh/') },
         { text: 'English', href: getPermalink('/en/') },
       ],
@@ -22,9 +22,9 @@ export const footerData = {
     {
       title: 'Site',
       links: [
-        { text: 'About', href: getPermalink('/#about') },
-        { text: 'Projects', href: getPermalink('/#projects') },
-        { text: 'Contact', href: getPermalink('/#contact') },
+        { text: 'About', href: '#about' },
+        { text: 'Projects', href: '#projects' },
+        { text: 'Contact', href: '#contact' },
       ],
     },
     {

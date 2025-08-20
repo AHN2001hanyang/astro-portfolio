@@ -1,50 +1,55 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import { projects } from '~/data/projects';
+import { Icon } from 'astro-icon/components';
 
 const metadata = {
   title: 'Jae AHN — 포트폴리오',
   ignoreTitleTemplate: true,
 };
 
-const featured = projects.filter((p) => p.featured).slice(0, 3);
+const all = projects; // 单页直接展示所有项目
 ---
 
+<style is:global>
+  html { scroll-behavior: smooth; }              /* 平滑滚动 */
+</style>
+
 <Layout metadata={metadata}>
-  <main class="px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+  <main id="top" class="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+    <!-- 背景装饰（柔和渐变光） -->
+    <div aria-hidden="true"
+         class="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[420px] w-[1200px] -translate-x-1/2 blur-3xl"
+         style="background: radial-gradient(600px 200px at 50% 40%, rgba(59,130,246,.18), transparent 70%);">
+    </div>
+
     <!-- Hero -->
-    <section class="mx-auto max-w-3xl text-center">
+    <section class="mx-auto max-w-4xl text-center">
       <h1 class="font-bold font-heading text-4xl md:text-5xl tracking-tight">
         Jae AHN · AI · Web · Game
       </h1>
       <p class="mt-4 text-muted-foreground">
-        개인 포트폴리오 & 블로그. AI·웹·게임 프로젝트를 만들고 기록합니다.
+        개인 포트폴리오 & 블로그 — 엔지니어링으로 문제를 해결합니다.
       </p>
+
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-        <a href="/projects/" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
-          프로젝트 보기
-        </a>
+        <a href="#projects" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">프로젝트</a>
         <a href="https://github.com/AHN2001hanyang" target="_blank" rel="noopener"
-           class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
-          GitHub
-        </a>
-        <a href="mailto:jaehyung9483@gmail.com"
-           class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
-          Contact
-        </a>
+           class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">GitHub</a>
+        <a href="#contact" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">Contact</a>
       </div>
     </section>
 
-    <!-- Intro / About（取代 /about 页面） -->
-    <section id="about" class="mx-auto mt-16 max-w-4xl">
-      <div class="relative rounded-3xl border bg-gradient-to-b from-white/60 to-white/20 dark:from-slate-900/60 dark:to-slate-900/20 p-6 sm:p-8 shadow-sm backdrop-blur">
+    <!-- About（取代独立 About 页） -->
+    <section id="about" class="mx-auto mt-16 max-w-4xl scroll-mt-24">
+      <div class="relative rounded-3xl border bg-gradient-to-b from-white/70 to-white/30 dark:from-slate-900/70 dark:to-slate-900/30 p-6 sm:p-8 shadow-sm backdrop-blur">
         <div class="grid gap-6 sm:grid-cols-[96px,1fr]">
           <img src="~/assets/images/default.png" alt="Avatar"
                class="h-24 w-24 rounded-2xl object-cover ring-1 ring-black/5 dark:ring-white/10" />
           <div>
             <h2 class="text-2xl font-semibold tracking-tight">Hello! 안녕하세요 👋</h2>
             <p class="mt-2 text-sm text-muted-foreground">
-              실용적인 엔지니어링을 좋아합니다. AI 응용 · 웹/백엔드 · 데스크톱 자동화에 관심이 많고,
+              실용적인 엔지니어링을 지향합니다. AI 응용 · 웹/백엔드 · 데스크톱 자동화에 관심이 많고,
               작은 단위로 만들고 빠르게 배포하며 글로 기록합니다.
             </p>
             <div class="mt-4 flex flex-wrap gap-2">
@@ -58,47 +63,73 @@ const featured = projects.filter((p) => p.featured).slice(0, 3);
       </div>
     </section>
 
-    <!-- Featured Projects（从数据中读取） -->
-    <section class="mx-auto mt-16 max-w-6xl">
-      <h2 class="text-2xl font-bold tracking-tight">대표 프로젝트</h2>
-      <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {featured.map((p) => (
-          <article class="rounded-2xl border p-6 hover:shadow-md">
-            <h3 class="font-semibold">{p.title}</h3>
-            <p class="mt-2 text-sm text-muted-foreground">{p.summary}</p>
+    <!-- Projects（数据驱动） -->
+    <section id="projects" class="mx-auto mt-16 max-w-6xl scroll-mt-24">
+      <h2 class="text-2xl font-bold tracking-tight">Projects</h2>
+      <p class="mt-2 text-muted-foreground">
+        新增项目只需在 <code>src/data/projects.ts</code> 追加一条记录，即会出现在这里。
+      </p>
 
-            {p.tags && p.tags.length ? (
-              <div class="mt-3 flex flex-wrap gap-2">
-                {p.tags.map((t) => (
-                  <span class="rounded-full border px-2 py-0.5 text-xs">{t}</span>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {all.map((p) => (
+          <article class="group relative overflow-hidden rounded-2xl border bg-white/60 p-0 shadow-sm transition hover:shadow-lg dark:bg-slate-900/60">
+            {/* 渐变描边 */}
+            <div class="pointer-events-none absolute inset-0 -z-10 rounded-2xl opacity-0 transition group-hover:opacity-100"
+                 style="background: linear-gradient(135deg, rgba(59,130,246,.45), rgba(147,51,234,.45)); filter: blur(16px);">
+            </div>
+
+            {/* 封面/图标 */}
+            {p.cover ? (
+              <div class="aspect-video w-full overflow-hidden">
+                <img src={p.cover} alt={p.title} class="h-full w-full object-cover" loading="lazy" />
+              </div>
+            ) : (
+              <div class="flex h-40 w-full items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-800">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg">
+                  <Icon name={p.icon ?? 'tabler:folder'} class="h-7 w-7" />
+                </div>
+              </div>
+            )}
+
+            {/* 内容 */}
+            <div class="p-6">
+              <h3 class="font-semibold">{p.title}</h3>
+              <p class="mt-2 text-sm text-muted-foreground">{p.summary}</p>
+
+              {p.tags && p.tags.length ? (
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {p.tags.map((t) => (
+                    <span class="rounded-full border px-2 py-0.5 text-xs">{t}</span>
+                  ))}
+                </div>
+              ) : null}
+
+              <div class="mt-4 flex flex-wrap gap-4">
+                {p.links.map((l) => (
+                  <a class="inline-flex items-center gap-1 underline hover:opacity-80"
+                     href={l.href} target={l.target ?? '_self'} rel="noopener">
+                    {l.label} →
+                  </a>
                 ))}
               </div>
-            ) : null}
-
-            <div class="mt-4 flex flex-wrap gap-4">
-              {p.links.map((l) => (
-                <a class="underline" href={l.href} target={l.target ?? '_self'} rel="noopener">
-                  {l.label} →
-                </a>
-              ))}
             </div>
           </article>
         ))}
       </div>
-
-      <div class="mt-8 text-center">
-        <a href="/projects/" class="underline">모든 프로젝트 보기</a>
-      </div>
     </section>
 
-    <!-- Blog CTA -->
-    <section class="mx-auto mt-16 max-w-3xl text-center">
-      <h2 class="text-2xl font-bold tracking-tight">블로그</h2>
-      <p class="mt-2 text-muted-foreground">최신 글은 블로그에서 확인하세요.</p>
-      <div class="mt-4">
-        <a href="/blog/" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
-          블로그로 이동
-        </a>
+    <!-- Contact -->
+    <section id="contact" class="mx-auto mt-16 max-w-4xl scroll-mt-24 text-center">
+      <h2 class="text-2xl font-bold tracking-tight">Contact</h2>
+      <p class="mt-2 text-muted-foreground">협업/문의는 이메일로 연락 주세요.</p>
+      <div class="mt-4 flex items-center justify-center gap-3">
+        <a href="mailto:jaehyung9483@gmail.com" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">Email</a>
+        <a href="https://github.com/AHN2001hanyang" target="_blank" rel="noopener"
+           class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">GitHub</a>
+      </div>
+
+      <div class="mt-10">
+        <a href="#top" class="text-sm underline opacity-70 hover:opacity-100">Back to top ↑</a>
       </div>
     </section>
   </main>
