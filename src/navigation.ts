@@ -7,6 +7,16 @@ export const headerData = {
     { text: 'Blog', href: getBlogPermalink() },
     { text: 'About', href: getPermalink('/about') },
     { text: 'Contact', href: getPermalink('/contact') },
+
+    // 🌐 Language menu（默认语言 ko 无前缀，其它语言带前缀）
+    {
+      text: '🌐 Language',
+      links: [
+        { text: '한국어', href: getPermalink('/') },   // default locale (ko)
+        { text: '中文', href: getPermalink('/zh/') },  // Chinese
+        { text: 'English', href: getPermalink('/en/') }, // English
+      ],
+    },
   ],
   actions: [
     { text: 'GitHub', href: 'https://github.com/AHN2001hanyang', target: '_blank' },
@@ -34,10 +44,11 @@ export const footerData = {
       ],
     },
     {
-      title: 'Legal',
+      title: 'Language',
       links: [
-        { text: 'Terms', href: getPermalink('/terms') },
-        { text: 'Privacy Policy', href: getPermalink('/privacy') },
+        { text: '한국어', href: getPermalink('/') },
+        { text: '中文', href: getPermalink('/zh/') },
+        { text: 'English', href: getPermalink('/en/') },
       ],
     },
   ],
@@ -48,11 +59,9 @@ export const footerData = {
   socialLinks: [
     { ariaLabel: 'X', icon: 'tabler:brand-x', href: '#' },
     { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: '#' },
-    { ariaLabel: 'Bilibili', icon: 'tabler:brand-bilibili', href: '#' },
+    { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: '#' },
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
     { ariaLabel: 'GitHub', icon: 'tabler:brand-github', href: 'https://github.com/AHN2001hanyang' },
   ],
-  footNote: `
-    © 2025 Jae AHN · Built with Astro & Tailwind · Deployed on GitHub Pages.
-  `,
+  footNote: `© 2025 Jae AHN · Built with Astro & Tailwind · Deployed on GitHub Pages.`,
 };
