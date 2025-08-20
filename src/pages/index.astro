@@ -2,347 +2,98 @@
 import Layout from '~/layouts/PageLayout.astro';
 
 import Hero from '~/components/widgets/Hero.astro';
-import Note from '~/components/widgets/Note.astro';
-import Features from '~/components/widgets/Features.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import Steps from '~/components/widgets/Steps.astro';
 import Content from '~/components/widgets/Content.astro';
+import Features from '~/components/widgets/Features.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'Jae AHN — Portfolio & Blog',
+  title: 'Jae AHN — 포트폴리오 & 블로그',
   ignoreTitleTemplate: true,
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
+  <!-- Hero：一句话自我定位 + 明确行动按钮 -->
   <Hero
     actions={[
-      {
-        variant: 'primary',
-        text: 'View Projects',
-        href: '/projects',
-        icon: 'tabler:rocket',
-      },
-      { text: 'About Me', href: '/about', icon: 'tabler:user' },
+      { variant: 'primary', text: '프로젝트 보기', href: '/projects', icon: 'tabler:rocket' },
+      { text: '소개', href: '/about', icon: 'tabler:user' },
       { text: 'GitHub', href: 'https://github.com/AHN2001hanyang', target: '_blank', icon: 'tabler:brand-github' },
     ]}
-    image={{ src: '~/assets/images/hero-image.png', alt: 'Portfolio Hero Image' }}
+    image={{ src: '~/assets/images/hero-image.png', alt: 'Portfolio Hero' }}
   >
     <Fragment slot="title">
-      <span class="text-accent dark:text-white">Jae AHN</span> · AI · Web · Game Projects
+      <span class="text-accent dark:text-white">Jae AHN</span> · AI · Web · Game
     </Fragment>
 
     <Fragment slot="subtitle">
-      개인 포트폴리오 & 블로그 | 个人作品集与技术博客。记录与分享：AI 应用、웹/백엔드、게임 제작实战与复盘。
-      New posts, project write-ups, and practical tutorials—clean, fast, and focused.
+      개인 포트폴리오 & 블로그. AI·웹·게임 프로젝트를 만들고 기록합니다.  
+      Projects, write-ups, practical tips — 깔끔하고 빠르게.
     </Fragment>
   </Hero>
 
-  <!-- Note Widget ******************* -->
-  <Note title="Focus" description="Clean UX · Practical Engineering · High Performance" />
-
-  <!-- Features Widget *************** -->
+  <!-- Featured Projects：首页只放 3 个代表作，更多去 /projects -->
   <Features
-    id="features"
-    tagline="Highlights"
-    title="What you’ll find here"
-    subtitle="精选内容：项目复盘、技术笔记、工具链与效率实践。"
+    id="featured"
+    tagline="Featured"
+    title="대표 프로젝트"
+    subtitle="더 많은 프로젝트는 Projects 페이지에서 확인하세요."
     items={[
       {
-        title: 'AI · Automation',
-        description:
-          '从数据到落地应用：模型选型、推理优化、自动化脚本与本地/云端部署经验。',
-        icon: 'tabler:cpu',
+        title: 'SafeConvert — 파일 포맷 변환',
+        description: '로컬 실행 · PDF/Word/JPG/HWPX 변환 · 배치 처리 · 진행률/로그 제공.',
+        icon: 'tabler:files',
+        callToAction: { text: 'GitHub', href: 'https://github.com/AHN2001hanyang', target: '_blank' },
       },
       {
-        title: 'Web / Backend',
-        description:
-          'Django / Flask / FastAPI · 前后端与 API 设计 · 部署与监控 · SEO 与性能优化。',
-        icon: 'tabler:device-desktop-analytics',
-      },
-      {
-        title: 'Game Dev',
-        description:
-          'Unity / Pygame · 玩法迭代、关卡与叙事设计 · 打包上线与商店上架实践。',
+        title: 'Unity 2048 — Android',
+        description: '오프라인 플레이, 점수 기록, 랭킹 · Google Play 출시 준비 중.',
         icon: 'tabler:device-gamepad-2',
+        callToAction: { text: 'Devlog', href: '/blog' },
       },
       {
-        title: 'Best Practices',
-        description:
-          '可维护的工程结构、代码质量、CI/CD、文档与版本管理，面向长期演进。',
-        icon: 'tabler:list-check',
-      },
-      {
-        title: 'Performance',
-        description:
-          'Lighthouse 优化、图片与静态资源策略、CSR/SSR/SSG 的选择与折中。',
-        icon: 'tabler:rocket',
-      },
-      {
-        title: 'Open & Growth',
-        description:
-          '开源协作、复盘沉淀、面向长期的个人品牌建设与持续交付节奏。',
-        icon: 'tabler:bulb',
+        title: 'HeyKanb AI — 데스크톱 음성 비서',
+        description: 'Windows에서 음성/명령으로 작업 자동화. 한·중 이중언어 지원.',
+        icon: 'tabler:microphone-2',
+        callToAction: { text: 'Overview', href: '/about' },
       },
     ]}
   />
 
-  <!-- Content Widget **************** -->
+  <!-- About 미니 섹션：一句话背景，指向 About -->
   <Content
-    isReversed
-    tagline="Stack"
-    title="Astro 5 + Tailwind · 快速、稳健、易扩展"
+    isAfterContent
+    tagline="About"
+    title="엔지니어링으로 문제를 해결합니다"
     items={[
-      {
-        title: 'Astro 5.0',
-        description:
-          '以内容为中心的静态站点生成，超快交付，灵活接入 React/Vue/Svelte 组件。',
-      },
-      {
-        title: 'Tailwind CSS',
-        description:
-          '原子化样式高效开发，统一设计系统，保持一致的视觉与交互体验。',
-      },
-      {
-        title: 'GitHub Pages + Actions',
-        description:
-          'Push 即发布，零服务器维护成本，自动化构建与版本化管理。',
-      },
+      { title: '관심사', description: '실용적인 AI 응용, 웹/백엔드, 게임 제작과 배포.' },
+      { title: '방식', description: '가벼운 실험 → 작게 출시 → 피드백 → 꾸준한 개선.' },
+      { title: '스택', description: 'Astro · Tailwind · GitHub Actions · Python/JS · Unity.' },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=2070&q=80',
-      alt: 'Colorful Image',
-    }}
+    image={{ src: '~/assets/images/default.png', alt: 'Avatar / Brand' }}
   >
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Modern foundations for a personal site that lasts
-      </h3>
-      以工程化方法打磨个人主页：结构清晰、易扩展、易维护。
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+      <p class="text-muted-foreground">
+        자세한 이력과 연락처는 <a href="/about" class="text-blue-600 dark:text-blue-400 underline">About</a>에서 확인하세요.
+      </p>
     </Fragment>
   </Content>
 
-  <!-- Content Widget **************** -->
-  <Content
-    isAfterContent
-    items={[
-      {
-        title: '高可定制',
-        description: `基于配置与组件组合快速调整版式与内容结构，支持多语言与暗色模式。`,
-      },
-      {
-        title: '响应式设计',
-        description:
-          '移动端优先，适配多终端设备，保证阅读体验一致与可访问性。',
-      },
-      {
-        title: '内容为王',
-        description:
-          '以项目复盘与技术文章为主，强调信息密度与可操作性。',
-      },
-      {
-        title: '可持续迭代',
-        description:
-          'PR 合并即部署，版本可追溯，轻松保持更新节奏。',
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=2194&q=80',
-      alt: 'Blueprint Image',
-    }}
-  >
-    <Fragment slot="content">让你的线上形象真正代表你在做的事与做成的事。</Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Content Widget **************** -->
-  <Content
-    isReversed
-    isAfterContent
-    items={[
-      {
-        title: '更强的参与度',
-        description:
-          '通过清晰的信息架构与可视化，降低理解门槛，提升停留与转化。',
-      },
-      {
-        title: '持续改进',
-        description:
-          '基于数据观察和反馈优化内容与导航，逐步构建知识资产。',
-      },
-      {
-        title: '时间效率',
-        description:
-          '复用主题与组件，省去搭框架的时间，把精力放在内容本身。',
-      },
-      {
-        title: '社区共建',
-        description: `欢迎在 GitHub Issues/Discussions 交流建议与想法。`,
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1611462985358-60d3498e0364?auto=format&fit=crop&w=2070&q=80',
-      alt: 'Astronauts Image',
-    }}
-  >
-    <Fragment slot="content">以内容驱动成长，以工程保证质量。</Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Steps Widget ****************** -->
-  <Steps
-    title="Site workflow"
-    items={[
-      {
-        title: 'Step 1: <span class="font-medium">Plan</span>',
-        description:
-          '确定信息架构（首页 / 项目 / 博客 / 关于），准备首批内容与图文素材。',
-        icon: 'tabler:package',
-      },
-      {
-        title: 'Step 2: <span class="font-medium">Write</span>',
-        description:
-          '用 Markdown 撰写文章/项目复盘，保持统一元数据与封面规范。',
-        icon: 'tabler:letter-case',
-      },
-      {
-        title: 'Step 3: <span class="font-medium">Ship</span>',
-        description:
-          '通过 GitHub Actions 自动构建部署，Push 即上线。',
-        icon: 'tabler:paint',
-      },
-      {
-        title: 'Ready!',
-        icon: 'tabler:check',
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1616198814651-e71f960c3180?auto=format&fit=crop&w=987&q=80',
-      alt: 'Steps image',
-    }}
-  />
-
-  <!-- Features2 Widget ************** -->
-  <Features2
-    title="Common sections"
-    subtitle="常用模块：导航、Hero、功能亮点、文章列表、FAQ、页脚"
-    tagline="Components"
-    items={[
-      {
-        title: 'Headers',
-        description: '清晰的站点导航与品牌识别，帮助用户找到想看的内容。',
-        icon: 'flat-color-icons:template',
-      },
-      {
-        title: 'Heros',
-        description: '用一句话说明你是谁、做什么，以及用户下一步该去哪里。',
-        icon: 'flat-color-icons:gallery',
-      },
-      {
-        title: 'Features',
-        description: '展示你的优势与能力边界，明确你能解决的问题。',
-        icon: 'flat-color-icons:approval',
-      },
-      {
-        title: 'Content',
-        description: '高信息密度的文章与复盘，沉淀可复用的方法论与清单。',
-        icon: 'flat-color-icons:document',
-      },
-      {
-        title: 'Call-to-Action',
-        description: '引导用户查看项目、关注博客、或联系合作。',
-        icon: 'flat-color-icons:advertising',
-      },
-      {
-        title: 'Footer',
-        description: '统一放置社交链接、版权、RSS/站点地图等入口。',
-        icon: 'flat-color-icons:database',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features2>
-
-  <!-- HighlightedPosts / Latest Posts ****** -->
+  <!-- Latest posts：最近博客 -->
   <BlogLatestPosts
-    title="Latest on the blog"
-    information={`最近的文章与更新。写作主题包括：项目复盘、AI/웹/게임 技术实践、工具链评测与性能优化。`}
+    title="최근 글"
+    information="프로젝트 회고, 구현 노트, 툴체인과 성능 최적화에 대한 짧은 글들."
   />
 
-  <!-- FAQs Widget ******************* -->
-  <FAQs
-    title="FAQ"
-    subtitle="常见问题"
-    tagline="FAQs"
-    classes={{ container: 'max-w-6xl' }}
-    items={[
-      {
-        title: '这个站点会多久更新一次？',
-        description:
-          '以项目为驱动，通常每周有内容更新或细节打磨；重大项目会有完整复盘。',
-      },
-      {
-        title: '可以合作或交流吗？',
-        description:
-          '欢迎通过页脚社交或 /about 页面中的邮箱联系，开源项目也欢迎提 Issue/PR。',
-      },
-      {
-        title: '技术栈会固定吗？',
-        description:
-          '以“解决问题”为导向，稳定优先；根据项目需求适度引入新技术。',
-      },
-    ]}
-  />
-
-  <!-- Stats Widget （可改为你自己的数据） ********** -->
-  <Stats
-    stats={[
-      { title: 'Projects', amount: '10+' },
-      { title: 'Blog Posts', amount: '20+' },
-      { title: 'Open Source', amount: 'Contribs' },
-      { title: 'Learning', amount: 'Daily' },
-    ]}
-  />
-
-  <!-- CallToAction Widget *********** -->
+  <!-- CTA：鼓励查看项目/联系 -->
   <CallToAction
     actions={[
-      {
-        variant: 'primary',
-        text: 'Start with Projects',
-        href: '/projects',
-        icon: 'tabler:arrow-right',
-      },
-      {
-        text: 'Contact',
-        href: '/about',
-        icon: 'tabler:mail',
-      },
+      { variant: 'primary', text: 'Projects', href: '/projects', icon: 'tabler:arrow-right' },
+      { text: 'About / Contact', href: '/about', icon: 'tabler:mail' },
     ]}
   >
-    <Fragment slot="title">
-      Build · Share · Iterate
-    </Fragment>
-
-    <Fragment slot="subtitle">
-      内容驱动成长，工程保障质量。欢迎浏览项目与博客，提出建议或合作想法。
-    </Fragment>
+    <Fragment slot="title">Build · Share · Iterate</Fragment>
+    <Fragment slot="subtitle">콘텐츠로 성장하고, 엔지니어링으로 품질을 보장합니다.</Fragment>
   </CallToAction>
 </Layout>
