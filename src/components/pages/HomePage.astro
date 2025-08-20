@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import type { Project } from '~/data/projects';
 import { projects } from '~/data/projects';
+import avatar from '~/assets/images/default.png'; // ✅ 静态导入头像
 
 /** 入口页传入：多语言词典 */
 const { t } = Astro.props as { t: any };
@@ -41,7 +42,7 @@ const all: Project[] = projects;
   <section id="about" class="reveal mx-auto mt-16 max-w-4xl scroll-mt-24">
     <div class="card-glass p-6 sm:p-8">
       <div class="grid gap-6 sm:grid-cols-[96px,1fr]">
-        <img src="~/assets/images/default.png" alt="Avatar"
+        <img src={avatar.src} alt="Avatar"
              class="h-24 w-24 rounded-2xl object-cover ring-1 ring-black/5 dark:ring-white/10" />
         <div>
           <h2 class="text-2xl font-semibold tracking-tight">{t.about.title}</h2>
@@ -63,7 +64,8 @@ const all: Project[] = projects;
 
     <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {all.map((p) => (
-        <article class="card hover:shadow-lg reveal">
+        <!-- 父元素加 group，支持 group-hover 动效 -->
+        <article class="card group hover:shadow-lg reveal">
           <!-- 封面 或 图标块（有封面时可点击放大预览） -->
           {p.cover ? (
             <button class="cover-btn group/cover relative block aspect-video w-full overflow-hidden" aria-label={`Open ${p.title} cover`}>
@@ -158,7 +160,8 @@ const all: Project[] = projects;
 <style>
   .anchor-btn { @apply inline-flex items-center rounded-xl border px-4 py-2 hover:shadow transition; }
   .chip { @apply rounded-full border px-2 py-0.5 text-xs; }
-  .card { @apply group relative overflow-hidden rounded-2xl border bg-white/60 p-0 shadow-sm transition dark:bg-slate-900/60; }
+  /* ✅ 这里已移除 group */
+  .card { @apply relative overflow-hidden rounded-2xl border bg-white/60 p-0 shadow-sm transition dark:bg-slate-900/60; }
   .card-glass { @apply relative rounded-3xl border bg-gradient-to-b from-white/70 to-white/30 dark:from-slate-900/70 dark:to-slate-900/30 shadow-sm backdrop-blur; }
   .btn-fab { @apply inline-flex h-10 w-10 items-center justify-center rounded-full border bg-white/80 backdrop-blur hover:shadow transition dark:bg-slate-900/80; }
 
@@ -222,7 +225,7 @@ const all: Project[] = projects;
   const imgEl = document.getElementById('lightbox-img');
   const closeBtn = document.getElementById('lightbox-close');
 
-  // 打开：点击带封面的按钮，取其子 <img> 的实际 URL（确保是构建后的路径）
+  // 打开：点击带封面的按钮，取其子 <img> 的实际 URL
   document.querySelectorAll('.cover-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const img = btn.querySelector('img');
@@ -232,7 +235,7 @@ const all: Project[] = projects;
     });
   });
 
-  // 关闭规则：点击关闭按钮、点击背景、按 Esc
+  // 关闭
   const closeLightbox = () => { lightbox.classList.add('hidden'); imgEl.src = ''; };
   closeBtn?.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', (e) => {
