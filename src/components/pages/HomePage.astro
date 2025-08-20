@@ -1,0 +1,121 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { Project } from '~/data/projects';
+import { projects } from '~/data/projects';
+
+/** 由外层传入：各语言的文案 */
+const { t } = Astro.props as { t: any };
+
+const all: Project[] = projects;
+---
+
+<style is:global>
+  html { scroll-behavior: smooth; }        /* 平滑滚动 */
+</style>
+
+<main id="top" class="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+  <!-- 柔和渐变背景 -->
+  <div aria-hidden="true"
+       class="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[420px] w-[1200px] -translate-x-1/2 blur-3xl"
+       style="background: radial-gradient(600px 200px at 50% 40%, rgba(59,130,246,.18), transparent 70%);">
+  </div>
+
+  <!-- Hero -->
+  <section class="mx-auto max-w-4xl text-center">
+    <h1 class="font-bold font-heading text-4xl md:text-5xl tracking-tight">
+      {t.hero.name} · {t.hero.stack}
+    </h1>
+    <p class="mt-4 text-muted-foreground">
+      {t.hero.subtitle}
+    </p>
+
+    <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+      <a href="#projects" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">{t.btn.projects}</a>
+      <a href={t.links.github} target="_blank" rel="noopener"
+         class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">GitHub</a>
+      <a href="#contact" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">{t.btn.contact}</a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="mx-auto mt-16 max-w-4xl scroll-mt-24">
+    <div class="relative rounded-3xl border bg-gradient-to-b from-white/70 to-white/30 dark:from-slate-900/70 dark:to-slate-900/30 p-6 sm:p-8 shadow-sm backdrop-blur">
+      <div class="grid gap-6 sm:grid-cols-[96px,1fr]">
+        <img src="~/assets/images/default.png" alt="Avatar"
+             class="h-24 w-24 rounded-2xl object-cover ring-1 ring-black/5 dark:ring-white/10" />
+        <div>
+          <h2 class="text-2xl font-semibold tracking-tight">{t.about.title}</h2>
+          <p class="mt-2 text-sm text-muted-foreground">{t.about.desc}</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {t.about.tags.map((x: string) => (
+              <span class="rounded-full border px-2 py-0.5 text-xs">{x}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects（数据驱动） -->
+  <section id="projects" class="mx-auto mt-16 max-w-6xl scroll-mt-24">
+    <h2 class="text-2xl font-bold tracking-tight">{t.projects.title}</h2>
+    <p class="mt-2 text-muted-foreground">{t.projects.subtitle}</p>
+
+    <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {all.map((p) => (
+        <article class="group relative overflow-hidden rounded-2xl border bg-white/60 p-0 shadow-sm transition hover:shadow-lg dark:bg-slate-900/60">
+          <div class="pointer-events-none absolute inset-0 -z-10 rounded-2xl opacity-0 transition group-hover:opacity-100"
+               style="background: linear-gradient(135deg, rgba(59,130,246,.45), rgba(147,51,234,.45)); filter: blur(16px);"></div>
+
+          {p.cover ? (
+            <div class="aspect-video w-full overflow-hidden">
+              <img src={p.cover} alt={p.title} class="h-full w-full object-cover" loading="lazy" />
+            </div>
+          ) : (
+            <div class="flex h-40 w-full items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-800">
+              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg">
+                <Icon name={p.icon ?? 'tabler:folder'} class="h-7 w-7" />
+              </div>
+            </div>
+          )}
+
+          <div class="p-6">
+            <h3 class="font-semibold">{p.title}</h3>
+            <p class="mt-2 text-sm text-muted-foreground">{p.summary}</p>
+
+            {p.tags && p.tags.length ? (
+              <div class="mt-3 flex flex-wrap gap-2">
+                {p.tags.map((t) => (
+                  <span class="rounded-full border px-2 py-0.5 text-xs">{t}</span>
+                ))}
+              </div>
+            ) : null}
+
+            <div class="mt-4 flex flex-wrap gap-4">
+              {p.links.map((l) => (
+                <a class="inline-flex items-center gap-1 underline hover:opacity-80"
+                   href={l.href} target={l.target ?? '_self'} rel="noopener">
+                  {l.label} →
+                </a>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="mx-auto mt-16 max-w-4xl scroll-mt-24 text-center">
+    <h2 class="text-2xl font-bold tracking-tight">{t.contact.title}</h2>
+    <p class="mt-2 text-muted-foreground">{t.contact.subtitle}</p>
+    <div class="mt-4 flex items-center justify-center gap-3">
+      <a href={t.links.email} class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">Email</a>
+      <a href={t.links.github} target="_blank" rel="noopener"
+         class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">GitHub</a>
+    </div>
+    <div class="mt-10">
+      <a href="#top" class="text-sm underline opacity-70 hover:opacity-100">{t.contact.backToTop}</a>
+    </div>
+  </section>
+</main>
