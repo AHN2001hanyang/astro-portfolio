@@ -5,7 +5,7 @@ import { projects } from '~/data/projects';
 
 /* ✅ 使用 astro:assets 优化本地图片（自动生成多尺寸、带占位，避免 CLS） */
 import { Image } from 'astro:assets';
-import avatar from '~/assets/images/default.png';
+import avatar from '~/assets/images/me.png'; // ← 使用你放的 me.png
 
 /** 入口页传入：多语言词典 */
 const { t } = Astro.props as { t: any };
@@ -48,7 +48,7 @@ const all: Project[] = projects;
         <!-- ✅ 用 <Image /> 渲染，指定 widths/sizes/placeholder，loading=eager 提升 LCP -->
         <Image
           src={avatar}
-          alt="Avatar"
+          alt="Jae AHN avatar"
           widths={[96, 128, 192]}
           sizes="(max-width: 640px) 96px, 128px"
           loading="eager"
@@ -190,7 +190,7 @@ const all: Project[] = projects;
   .lightbox.hidden { display: none; }
   .lightbox-backdrop { @apply absolute inset-0 bg-black/70 backdrop-blur-sm; }
   .lightbox-stage { @apply relative z-10 flex h-full w-full items-center justify-center p-4; }
-  .lightbox-img { @apply max-h-[85vh] max-w-[90vw] rounded-xl shadow-2xl; }
+  .lightbox-img { @apply max-h-[85vh] max-w-[90vw] rounded-xl; }
   .lightbox-close { @apply absolute top-4 right-4; }
 </style>
 

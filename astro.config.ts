@@ -1,3 +1,4 @@
+// astro.config.ts
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -13,7 +14,11 @@ import type { AstroIntegration } from 'astro';
 
 import astrowind from './vendor/integration';
 
-import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin, lazyImagesRehypePlugin } from './src/utils/frontmatter';
+import {
+  readingTimeRemarkPlugin,
+  responsiveTablesRehypePlugin,
+  lazyImagesRehypePlugin,
+} from './src/utils/frontmatter';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,13 +27,16 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
+  /** ✅ 为 GitHub Pages 指定站点与 base（sitemap/OG/链接都会用到） */
+  site: 'https://ahn2001hanyang.github.io',
+  base: '/astro-portfolio/',
+  trailingSlash: 'never',
+
   output: 'static',
 
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    sitemap(),
+    tailwind({ applyBaseStyles: false }),
+    sitemap(), // ✅ 站点地图
     mdx(),
     icon({
       include: {
@@ -66,13 +74,18 @@ export default defineConfig({
       Logger: 1,
     }),
 
-    astrowind({
-      config: './src/config.yaml',
-    }),
+    astrowind({ config: './src/config.yaml' }),
   ],
 
+  /** ✅ 远程图域名白名单（若以后用 <Image /> 处理远程图不会报错） */
   image: {
-    domains: ['cdn.pixabay.com'],
+    domains: [
+      'cdn.pixabay.com',
+      'opengraph.githubassets.com',
+      'avatars.githubusercontent.com',
+      'raw.githubusercontent.com',
+      'img.shields.io',
+    ],
   },
 
   markdown: {
