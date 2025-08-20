@@ -1,9 +1,9 @@
 site:
   name: "Jae AHN • Portfolio"
-  site: "https://AHN2001hanyang.github.io/astro-portfolio/"
-  base: "/astro-portfolio/"
-  trailingSlash: true
-  googleSiteVerificationId: ''
+  site: "https://ahn2001hanyang.github.io/astro-portfolio/"
+  base: "/astro-portfolio/"       # GitHub Pages 仓库名
+  trailingSlash: true             # 等价于 Astro 的 'always'，避免 404
+  googleSiteVerificationId: ""
 
 metadata:
   title:
@@ -16,16 +16,17 @@ metadata:
   openGraph:
     site_name: "Jae AHN"
     images:
-      - url: "~/assets/images/default.png"
+      # Step 15: 使用新的 OG 分享图（建议 1200×630）
+      - url: "~/assets/images/og.png"
         width: 1200
-        height: 628
+        height: 630
     type: website
   twitter:
     handle: ""
     site: ""
     cardType: summary_large_image
 
-# ✅ 这里设为韩文
+# 默认语言：韩文；左右文方向为 LTR
 i18n:
   language: ko
   textDirection: ltr

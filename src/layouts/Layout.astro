@@ -34,6 +34,16 @@ const { language, textDirection } = I18N;
     <ApplyColorMode />
     <Metadata {...metadata} />
     <SiteVerification />
+
+    {/*
+      ⬇️ 显式挂载 SVG favicon / PWA manifest / theme-color
+      - 对应 public/favicon.svg 与 public/site.webmanifest
+      - 若 Favicons 组件也输出了同类标签，浏览器会以最后一个为准；此处作为明确覆盖
+    */}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0ea5e9" />
+
     <Analytics />
 
     <!-- Comment the line below to disable View Transitions -->
