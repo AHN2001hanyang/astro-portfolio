@@ -1,11 +1,7 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import HomePage from '~/components/pages/HomePage.astro';
-import { t } from '~/i18n';
-
+import { t } from '~/i18n/index.ts';
 const metadata = { title: 'Jae AHN — 포트폴리오', ignoreTitleTemplate: true };
 ---
-
-<Layout metadata={metadata}>
-  <HomePage t={t('ko')} />
-</Layout>
+<Layout metadata={metadata}><HomePage t={t('ko')} /></Layout>
