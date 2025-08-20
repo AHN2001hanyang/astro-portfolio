@@ -1,99 +1,86 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 
-import Hero from '~/components/widgets/Hero.astro';
-import Content from '~/components/widgets/Content.astro';
-import Features from '~/components/widgets/Features.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-
 const metadata = {
-  title: 'Jae AHN — 포트폴리오 & 블로그',
+  title: 'Jae AHN — 포트폴리오',
   ignoreTitleTemplate: true,
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero：一句话自我定位 + 明确行动按钮 -->
-  <Hero
-    actions={[
-      { variant: 'primary', text: '프로젝트 보기', href: '/projects', icon: 'tabler:rocket' },
-      { text: '소개', href: '/about', icon: 'tabler:user' },
-      { text: 'GitHub', href: 'https://github.com/AHN2001hanyang', target: '_blank', icon: 'tabler:brand-github' },
-    ]}
-    image={{ src: '~/assets/images/hero-image.png', alt: 'Portfolio Hero' }}
-  >
-    <Fragment slot="title">
-      <span class="text-accent dark:text-white">Jae AHN</span> · AI · Web · Game
-    </Fragment>
-
-    <Fragment slot="subtitle">
-      개인 포트폴리오 & 블로그. AI·웹·게임 프로젝트를 만들고 기록합니다.  
-      Projects, write-ups, practical tips — 깔끔하고 빠르게.
-    </Fragment>
-  </Hero>
-
-  <!-- Featured Projects：首页只放 3 个代表作，更多去 /projects -->
-  <Features
-    id="featured"
-    tagline="Featured"
-    title="대표 프로젝트"
-    subtitle="더 많은 프로젝트는 Projects 페이지에서 확인하세요."
-    items={[
-      {
-        title: 'SafeConvert — 파일 포맷 변환',
-        description: '로컬 실행 · PDF/Word/JPG/HWPX 변환 · 배치 처리 · 진행률/로그 제공.',
-        icon: 'tabler:files',
-        callToAction: { text: 'GitHub', href: 'https://github.com/AHN2001hanyang', target: '_blank' },
-      },
-      {
-        title: 'Unity 2048 — Android',
-        description: '오프라인 플레이, 점수 기록, 랭킹 · Google Play 출시 준비 중.',
-        icon: 'tabler:device-gamepad-2',
-        callToAction: { text: 'Devlog', href: '/blog' },
-      },
-      {
-        title: 'HeyKanb AI — 데스크톱 음성 비서',
-        description: 'Windows에서 음성/명령으로 작업 자동화. 한·중 이중언어 지원.',
-        icon: 'tabler:microphone-2',
-        callToAction: { text: 'Overview', href: '/about' },
-      },
-    ]}
-  />
-
-  <!-- About 미니 섹션：一句话背景，指向 About -->
-  <Content
-    isAfterContent
-    tagline="About"
-    title="엔지니어링으로 문제를 해결합니다"
-    items={[
-      { title: '관심사', description: '실용적인 AI 응용, 웹/백엔드, 게임 제작과 배포.' },
-      { title: '방식', description: '가벼운 실험 → 작게 출시 → 피드백 → 꾸준한 개선.' },
-      { title: '스택', description: 'Astro · Tailwind · GitHub Actions · Python/JS · Unity.' },
-    ]}
-    image={{ src: '~/assets/images/default.png', alt: 'Avatar / Brand' }}
-  >
-    <Fragment slot="content">
-      <p class="text-muted-foreground">
-        자세한 이력과 연락처는 <a href="/about" class="text-blue-600 dark:text-blue-400 underline">About</a>에서 확인하세요.
+  <main class="px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+    <!-- Hero：一句话自我定位 + 三个按钮 -->
+    <section class="mx-auto max-w-3xl text-center">
+      <h1 class="font-bold font-heading text-4xl md:text-5xl tracking-tight">
+        Jae AHN · AI · Web · Game
+      </h1>
+      <p class="mt-4 text-muted-foreground">
+        개인 포트폴리오 & 블로그. AI·웹·게임 프로젝트를 만들고 기록합니다.
       </p>
-    </Fragment>
-  </Content>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="/projects/" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
+          프로젝트 보기
+        </a>
+        <a href="/about/" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
+          소개
+        </a>
+        <a href="https://github.com/AHN2001hanyang" target="_blank" rel="noopener"
+           class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
+          GitHub
+        </a>
+      </div>
+    </section>
 
-  <!-- Latest posts：最近博客 -->
-  <BlogLatestPosts
-    title="최근 글"
-    information="프로젝트 회고, 구현 노트, 툴체인과 성능 최적화에 대한 짧은 글들."
-  />
+    <!-- Featured Projects：只展示三个代表作 -->
+    <section class="mx-auto mt-16 max-w-6xl">
+      <h2 class="text-2xl font-bold tracking-tight">대표 프로젝트</h2>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="rounded-2xl border p-6 hover:shadow-md">
+          <h3 class="font-semibold">SafeConvert — 파일 포맷 변환</h3>
+          <p class="mt-2 text-sm text-muted-foreground">
+            로컬 실행 · PDF/Word/JPG/HWPX 변환 · 배치 처리 · 진행률/로그 제공.
+          </p>
+          <div class="mt-4">
+            <a href="https://github.com/AHN2001hanyang" target="_blank" rel="noopener"
+               class="underline">GitHub →</a>
+          </div>
+        </article>
 
-  <!-- CTA：鼓励查看项目/联系 -->
-  <CallToAction
-    actions={[
-      { variant: 'primary', text: 'Projects', href: '/projects', icon: 'tabler:arrow-right' },
-      { text: 'About / Contact', href: '/about', icon: 'tabler:mail' },
-    ]}
-  >
-    <Fragment slot="title">Build · Share · Iterate</Fragment>
-    <Fragment slot="subtitle">콘텐츠로 성장하고, 엔지니어링으로 품질을 보장합니다.</Fragment>
-  </CallToAction>
+        <article class="rounded-2xl border p-6 hover:shadow-md">
+          <h3 class="font-semibold">Unity 2048 — Android</h3>
+          <p class="mt-2 text-sm text-muted-foreground">
+            오프라인 플레이, 점수 기록, 랭킹 · Google Play 출시 준비 중.
+          </p>
+          <div class="mt-4">
+            <a href="/blog/" class="underline">Devlog →</a>
+          </div>
+        </article>
+
+        <article class="rounded-2xl border p-6 hover:shadow-md">
+          <h3 class="font-semibold">HeyKanb AI — 데스크톱 음성 비서</h3>
+          <p class="mt-2 text-sm text-muted-foreground">
+            Windows에서 음성/명령으로 작업 자동화. 한·중 이중언어 지원.
+          </p>
+          <div class="mt-4">
+            <a href="/about/" class="underline">Overview →</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="mt-8 text-center">
+        <a href="/projects/" class="underline">모든 프로젝트 보기</a>
+      </div>
+    </section>
+
+    <!-- Blog CTA：不再显示文章列表，只保留一个入口 -->
+    <section class="mx-auto mt-16 max-w-3xl text-center">
+      <h2 class="text-2xl font-bold tracking-tight">블로그</h2>
+      <p class="mt-2 text-muted-foreground">최신 글은 블로그에서 확인하세요.</p>
+      <div class="mt-4">
+        <a href="/blog/" class="inline-flex items-center rounded-xl border px-4 py-2 hover:shadow">
+          블로그로 이동
+        </a>
+      </div>
+    </section>
+  </main>
 </Layout>
