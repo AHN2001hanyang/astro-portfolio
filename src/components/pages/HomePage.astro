@@ -14,6 +14,9 @@ const all: Project[] = projects;
 </style>
 
 <main id="top" class="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+  <!-- 滚动进度条 -->
+  <div id="scroll-progress" class="fixed left-0 top-0 z-50 h-[3px] w-0 bg-blue-600"></div>
+
   <!-- 柔和渐变背景 -->
   <div aria-hidden="true"
        class="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[420px] w-[1200px] -translate-x-1/2 blur-3xl"
@@ -21,21 +24,21 @@ const all: Project[] = projects;
   </div>
 
   <!-- Hero -->
-  <section class="mx-auto max-w-4xl text-center">
+  <section class="reveal mx-auto max-w-4xl text-center">
     <h1 class="font-bold font-heading text-4xl md:text-5xl tracking-tight">
       {t.hero.name} · {t.hero.stack}
     </h1>
     <p class="mt-4 text-muted-foreground">{t.hero.subtitle}</p>
 
     <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-      <a href="#projects" class="anchor-btn"> {t.btn.projects} </a>
-      <a href={t.links.github} target="_blank" rel="noopener" class="anchor-btn"> GitHub </a>
-      <a href="#contact" class="anchor-btn"> {t.btn.contact} </a>
+      <a href="#projects" class="anchor-btn">{t.btn.projects}</a>
+      <a href={t.links.github} target="_blank" rel="noopener" class="anchor-btn">GitHub</a>
+      <a href="#contact" class="anchor-btn">{t.btn.contact}</a>
     </div>
   </section>
 
   <!-- About -->
-  <section id="about" class="mx-auto mt-16 max-w-4xl scroll-mt-24">
+  <section id="about" class="reveal mx-auto mt-16 max-w-4xl scroll-mt-24">
     <div class="card-glass p-6 sm:p-8">
       <div class="grid gap-6 sm:grid-cols-[96px,1fr]">
         <img src="~/assets/images/default.png" alt="Avatar"
@@ -54,17 +57,22 @@ const all: Project[] = projects;
   </section>
 
   <!-- Projects（数据驱动） -->
-  <section id="projects" class="mx-auto mt-16 max-w-6xl scroll-mt-24">
+  <section id="projects" class="reveal mx-auto mt-16 max-w-6xl scroll-mt-24">
     <h2 class="text-2xl font-bold tracking-tight">{t.projects.title}</h2>
     <p class="mt-2 text-muted-foreground">{t.projects.subtitle}</p>
 
     <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {all.map((p) => (
-        <article class="card hover:shadow-lg">
+        <article class="card hover:shadow-lg reveal">
           <!-- 封面或图标 -->
           {p.cover ? (
             <div class="aspect-video w-full overflow-hidden">
-              <img src={p.cover} alt={p.title} class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" loading="lazy" />
+              <img
+                src={p.cover}
+                alt={p.title}
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                loading="lazy"
+              />
             </div>
           ) : (
             <div class="flex h-40 w-full items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-800">
@@ -112,7 +120,7 @@ const all: Project[] = projects;
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="mx-auto mt-16 max-w-4xl scroll-mt-24 text-center">
+  <section id="contact" class="reveal mx-auto mt-16 max-w-4xl scroll-mt-24 text-center">
     <h2 class="text-2xl font-bold tracking-tight">{t.contact.title}</h2>
     <p class="mt-2 text-muted-foreground">{t.contact.subtitle}</p>
     <div class="mt-4 flex items-center justify-center gap-3">
@@ -123,6 +131,17 @@ const all: Project[] = projects;
       <a href="#top" class="text-sm underline opacity-70 hover:opacity-100">{t.contact.backToTop}</a>
     </div>
   </section>
+
+  <!-- 浮动工具：主题开关 + 返回顶部 -->
+  <div class="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+    <button id="theme-toggle" class="btn-fab" aria-label="Toggle theme" title="Toggle theme">
+      <Icon id="theme-icon-sun" name="tabler:sun" class="h-5 w-5" />
+      <Icon id="theme-icon-moon" name="tabler:moon" class="h-5 w-5 hidden" />
+    </button>
+    <a href="#top" class="btn-fab" aria-label="Back to top" title="Back to top">
+      <Icon name="tabler:arrow-up" class="h-5 w-5" />
+    </a>
+  </div>
 </main>
 
 <style>
@@ -130,26 +149,62 @@ const all: Project[] = projects;
   .chip { @apply rounded-full border px-2 py-0.5 text-xs; }
   .card { @apply group relative overflow-hidden rounded-2xl border bg-white/60 p-0 shadow-sm transition dark:bg-slate-900/60; }
   .card-glass { @apply relative rounded-3xl border bg-gradient-to-b from-white/70 to-white/30 dark:from-slate-900/70 dark:to-slate-900/30 shadow-sm backdrop-blur; }
+  .btn-fab { @apply inline-flex h-10 w-10 items-center justify-center rounded-full border bg-white/80 backdrop-blur hover:shadow transition dark:bg-slate-900/80; }
+
+  /* 出场动画（Intersection Observer 控制） */
+  .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
 </style>
 
-<!-- ScrollSpy：根据视口高亮导航锚点 -->
+<!-- 交互逻辑：ScrollSpy（已在上一步）、滚动进度、显现动画、主题开关 -->
 <script>
-  const sections = ['about','projects','contact'];
-  const linkMap = new Map();
-  document.querySelectorAll('a[href^="#"]').forEach((a) => {
-    const id = a.getAttribute('href')?.slice(1);
-    if (id && sections.includes(id)) {
-      if (!linkMap.has(id)) linkMap.set(id, []);
-      linkMap.get(id).push(a);
-    }
-  });
-  const setActive = (id) => {
-    linkMap.forEach((arr, key) => {
-      arr.forEach((a) => a.classList.toggle('text-blue-600', key === id));
-    });
+  // ===== 1) 滚动进度条 =====
+  const progress = document.getElementById('scroll-progress');
+  const updateProgress = () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    progress.style.width = (scrolled * 100) + '%';
   };
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // ===== 2) 显现动画 =====
   const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
-  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0.01 });
-  sections.forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  // ===== 3) 主题切换（持久化） =====
+  const root = document.documentElement;
+  const btn = document.getElementById('theme-toggle');
+  const sun = document.getElementById('theme-icon-sun');
+  const moon = document.getElementById('theme-icon-moon');
+
+  const applyTheme = (mode) => {
+    if (mode === 'dark') root.classList.add('dark');
+    else root.classList.remove('dark');
+    localStorage.setItem('theme', mode);
+    // 切换图标
+    const isDark = mode === 'dark';
+    sun.classList.toggle('hidden', isDark);
+    moon.classList.toggle('hidden', !isDark);
+  };
+
+  // 初始：localStorage > 系统偏好
+  const saved = localStorage.getItem('theme');
+  if (saved) applyTheme(saved);
+  else applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+  // 跟随系统变化（如果用户没手动切换过）
+  const mql = window.matchMedia('(prefers-color-scheme: dark)');
+  mql.addEventListener('change', (e) => {
+    const userSet = localStorage.getItem('theme');
+    if (!userSet) applyTheme(e.matches ? 'dark' : 'light');
+  });
+
+  // 点击切换
+  btn?.addEventListener('click', () => {
+    const isDark = root.classList.contains('dark');
+    applyTheme(isDark ? 'light' : 'dark');
+  });
 </script>
