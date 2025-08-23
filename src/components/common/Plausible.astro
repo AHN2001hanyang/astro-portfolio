@@ -1,0 +1,10 @@
+---
+/** Plausible Analytics Loader
+ *  - 无 Cookie、隐私友好
+ *  - 包含 tagged-events 与 outbound-links 两个插件
+ *  - 之后换自定义域名时，只需把 domain 改掉即可
+ */
+const domain = 'ahn2001hanyang.github.io';
+const src = 'https://plausible.io/js/script.tagged-events.outbound-links.js';
+---
+<script is:inline defer data-domain={domain} src={src}></script>

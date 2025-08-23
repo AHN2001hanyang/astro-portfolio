@@ -38,9 +38,35 @@ const all: Project[] = projects;
     <p class="mt-4 text-muted-foreground">{t.hero.subtitle}</p>
 
     <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-      <a href="#projects" class="anchor-btn">{t.btn.projects}</a>
-      <a href={t.links.github} target="_blank" rel="noopener" class="anchor-btn">GitHub</a>
-      <a href="#contact" class="anchor-btn">{t.btn.contact}</a>
+      <a
+        href="#projects"
+        class="anchor-btn"
+        data-analytics-event="cta_click"
+        data-analytics-event-category="hero"
+        data-analytics-event-label="projects"
+      >
+        {t.btn.projects}
+      </a>
+      <a
+        href={t.links.github}
+        target="_blank"
+        rel="noopener"
+        class="anchor-btn"
+        data-analytics-event="cta_click"
+        data-analytics-event-category="hero"
+        data-analytics-event-label="github"
+      >
+        GitHub
+      </a>
+      <a
+        href="#contact"
+        class="anchor-btn"
+        data-analytics-event="cta_click"
+        data-analytics-event-category="hero"
+        data-analytics-event-label="contact"
+      >
+        {t.btn.contact}
+      </a>
     </div>
   </section>
 
@@ -111,8 +137,15 @@ const all: Project[] = projects;
 
             <div class="mt-4 flex flex-wrap gap-4">
               {p.links.map((l) => (
-                <a class="inline-flex items-center gap-1 underline hover:opacity-80"
-                   href={l.href} target={l.target ?? '_self'} rel="noopener">
+                <a
+                  class="inline-flex items-center gap-1 underline hover:opacity-80"
+                  href={l.href}
+                  target={l.target ?? '_self'}
+                  rel="noopener"
+                  data-analytics-event="project_link"
+                  data-analytics-event-category="projects"
+                  data-analytics-event-label={`${p.title} | ${l.label}`}
+                >
                   {l.label} →
                 </a>
               ))}
@@ -141,8 +174,26 @@ const all: Project[] = projects;
     <h2 class="text-2xl font-bold tracking-tight">{t.contact.title}</h2>
     <p class="mt-2 text-muted-foreground">{t.contact.subtitle}</p>
     <div class="mt-4 flex items-center justify-center gap-3">
-      <a href={t.links.email} class="anchor-btn">Email</a>
-      <a href={t.links.github} target="_blank" rel="noopener" class="anchor-btn">GitHub</a>
+      <a
+        href={t.links.email}
+        class="anchor-btn"
+        data-analytics-event="contact_link"
+        data-analytics-event-category="contact"
+        data-analytics-event-label="email"
+      >
+        Email
+      </a>
+      <a
+        href={t.links.github}
+        target="_blank"
+        rel="noopener"
+        class="anchor-btn"
+        data-analytics-event="contact_link"
+        data-analytics-event-category="contact"
+        data-analytics-event-label="github"
+      >
+        GitHub
+      </a>
     </div>
 
     <!-- ✅ 插入免后端联系表单 -->
