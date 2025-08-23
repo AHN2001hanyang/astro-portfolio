@@ -27,9 +27,9 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
-  /** ✅ 为 GitHub Pages 指定站点与 base（sitemap/OG/链接都会用到） */
+  /** ✅ 用户主页：根域名 + 根路径 */
   site: 'https://ahn2001hanyang.github.io',
-  base: '/astro-portfolio/',
+  base: '/',                 // ← 从 /astro-portfolio/ 改为根路径
   trailingSlash: 'never',
 
   output: 'static',
@@ -42,8 +42,8 @@ export default defineConfig({
       serialize(item) {
         const now = new Date().toISOString();
         const isHome =
-          item.url === 'https://ahn2001hanyang.github.io/astro-portfolio/' ||
-          item.url.endsWith('/astro-portfolio/');
+          item.url === 'https://ahn2001hanyang.github.io/' ||
+          item.url === 'https://ahn2001hanyang.github.io';
         return {
           ...item,
           changefreq: 'weekly',
@@ -93,7 +93,7 @@ export default defineConfig({
     astrowind({ config: './src/config.yaml' }),
   ],
 
-  /** ✅ 远程图域名白名单（若以后用 <Image /> 处理远程图不会报错） */
+  /** ✅ 远程图域名白名单 */
   image: {
     domains: [
       'cdn.pixabay.com',

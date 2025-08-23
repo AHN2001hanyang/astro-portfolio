@@ -1,8 +1,8 @@
 site:
   name: "Jae AHN • Portfolio"
-  site: "https://ahn2001hanyang.github.io/astro-portfolio/"
-  base: "/astro-portfolio/"       # GitHub Pages 仓库名
-  trailingSlash: true             # 等价于 Astro 的 'always'，避免 404
+  site: "https://ahn2001hanyang.github.io"  # ✅ 根域名（用户主页）
+  base: "/"                                 # ✅ 根路径
+  trailingSlash: false                      # 与 astro.config.ts 的 'never' 一致，避免重复斜杠/404
   googleSiteVerificationId: ""
 
 metadata:
@@ -16,7 +16,7 @@ metadata:
   openGraph:
     site_name: "Jae AHN"
     images:
-      # Step 15: 使用新的 OG 分享图（建议 1200×630）
+      # 分享卡片（建议 1200×630）
       - url: "~/assets/images/og.png"
         width: 1200
         height: 630
@@ -26,7 +26,7 @@ metadata:
     site: ""
     cardType: summary_large_image
 
-# 默认语言：韩文；左右文方向为 LTR
+# 默认语言：韩文；方向：从左到右
 i18n:
   language: ko
   textDirection: ltr
