@@ -3,9 +3,12 @@ import { Icon } from 'astro-icon/components';
 import type { Project } from '~/data/projects';
 import { projects } from '~/data/projects';
 
-/* ✅ 使用 astro:assets 优化本地图片（自动生成多尺寸、带占位，避免 CLS） */
+/* ✅ 本地头像：astro:assets 自动生成多尺寸、带占位 */
 import { Image } from 'astro:assets';
-import avatar from '~/assets/images/me.png'; // ← 使用你放的 me.png
+import avatar from '~/assets/images/me.png';
+
+/* ✅ 联系表单（Formspree） */
+import ContactForm from '~/components/common/ContactForm.astro';
 
 /** 入口页传入：多语言词典 */
 const { t } = Astro.props as { t: any };
@@ -45,7 +48,7 @@ const all: Project[] = projects;
   <section id="about" class="reveal mx-auto mt-16 max-w-4xl scroll-mt-24">
     <div class="card-glass p-6 sm:p-8">
       <div class="grid gap-6 sm:grid-cols-[96px,1fr]">
-        <!-- ✅ 用 <Image /> 渲染，指定 widths/sizes/placeholder，loading=eager 提升 LCP -->
+        <!-- 头像 -->
         <Image
           src={avatar}
           alt="Jae AHN avatar"
@@ -76,12 +79,9 @@ const all: Project[] = projects;
 
     <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {all.map((p) => (
-        <!-- 父元素加 group，支持 group-hover 动效 -->
         <article class="card group hover:shadow-lg reveal">
-          <!-- 封面 或 图标块（有封面时可点击放大预览） -->
           {p.cover ? (
             <button class="cover-btn group/cover relative block aspect-video w-full overflow-hidden" aria-label={`Open ${p.title} cover`}>
-              <!-- 远程图：lazy + async，避免阻塞主线程；容器已固定比例，CLS≈0 -->
               <img
                 src={p.cover}
                 alt={p.title}
@@ -99,7 +99,6 @@ const all: Project[] = projects;
             </div>
           )}
 
-          <!-- 内容 -->
           <div class="p-6">
             <h3 class="font-semibold">{p.title}</h3>
             <p class="mt-2 text-sm text-muted-foreground">{p.summary}</p>
@@ -122,7 +121,6 @@ const all: Project[] = projects;
             {p.repo ? (
               <div class="mt-3">
                 <a href={`https://github.com/${p.repo}/stargazers`} target="_blank" rel="noopener">
-                  <!-- 徽章：异步解码、懒加载，避免阻塞渲染 -->
                   <img
                     src={`https://img.shields.io/github/stars/${p.repo}?style=social`}
                     alt="GitHub stars"
@@ -146,6 +144,10 @@ const all: Project[] = projects;
       <a href={t.links.email} class="anchor-btn">Email</a>
       <a href={t.links.github} target="_blank" rel="noopener" class="anchor-btn">GitHub</a>
     </div>
+
+    <!-- ✅ 插入免后端联系表单 -->
+    <ContactForm />
+
     <div class="mt-10">
       <a href="#top" class="text-sm underline opacity-70 hover:opacity-100">{t.contact.backToTop}</a>
     </div>
@@ -241,7 +243,6 @@ const all: Project[] = projects;
   const imgEl = document.getElementById('lightbox-img');
   const closeBtn = document.getElementById('lightbox-close');
 
-  // 打开：点击带封面的按钮
   document.querySelectorAll('.cover-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const img = btn.querySelector('img');
@@ -251,7 +252,6 @@ const all: Project[] = projects;
     });
   });
 
-  // 关闭
   const closeLightbox = () => { lightbox.classList.add('hidden'); imgEl.src = ''; };
   closeBtn?.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', (e) => {
