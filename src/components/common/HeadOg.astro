@@ -1,0 +1,63 @@
+---
+import type { MetaData as MetaDataType } from '~/types';
+/* 作为分享图使用你的头像（已随构建生成正确 URL） */
+import avatarUrl from '~/assets/images/me.png?url';
+
+export interface Props { metadata?: MetaDataType }
+const { metadata = {} } = Astro.props;
+
+const SITE = Astro.site;                               // 来自 astro.config.ts 的 site
+const BASE = import.meta.env.BASE_URL;                 // 例如 "/astro-portfolio/"
+const canonical = SITE ? new URL(Astro.url.pathname || BASE, SITE).toString() : BASE;
+
+const title =
+  (metadata as any)?.title?.default ??
+  (metadata as any)?.title ??
+  'Jae AHN — Portfolio';
+
+const description =
+  (metadata as any)?.description ??
+  'Developer portfolio, projects and contacts.';
+
+/* 分享图：现在用头像；若你放了 public/og.png，可改为：new URL(BASE + 'og.png', SITE).toString() */
+const ogImage = SITE ? new URL(avatarUrl, SITE).toString() : avatarUrl;
+---
+
+<!-- Canonical（有助于收录） -->
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={title} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<!-- JSON-LD：WebSite + Person -->
+<script type="application/ld+json">
+{JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "url": canonical,
+      "name": title,
+      "description": description
+    },
+    {
+      "@type": "Person",
+      "name": "Jae AHN",
+      "url": canonical,
+      "image": ogImage,
+      "sameAs": ["https://github.com/AHN2001hanyang"]
+    }
+  ]
+})}
+</script>

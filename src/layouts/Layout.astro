@@ -11,6 +11,7 @@ import Metadata from '~/components/common/Metadata.astro';
 import SiteVerification from '~/components/common/SiteVerification.astro';
 import Analytics from '~/components/common/Analytics.astro';
 import BasicScripts from '~/components/common/BasicScripts.astro';
+import HeadOg from '~/components/common/HeadOg.astro'; // ✅ 新增：统一 OG/Twitter + JSON-LD
 
 // Comment the line below to disable View Transitions
 import { ClientRouter } from 'astro:transitions';
@@ -29,18 +30,20 @@ const { language, textDirection } = I18N;
 <html lang={language} dir={textDirection} class="2xl:text-[20px]">
   <head>
     <CommonMeta />
-    <Favicons /> <!-- favicon & manifest 由此组件用 ?url 输出 -->
+    <Favicons />
     <CustomStyles />
     <ApplyColorMode />
     <Metadata {...metadata} />
+    <HeadOg metadata={metadata} /> <!-- ✅ 新增：OG/Twitter + JSON-LD + Canonical -->
     <SiteVerification />
+
+    <!-- 性能优化：预连接社交封面域名 -->
+    <link rel="preconnect" href="https://opengraph.githubassets.com" crossorigin />
+    <link rel="dns-prefetch" href="https://opengraph.githubassets.com" />
 
     <meta name="theme-color" content="#0ea5e9" />
 
     <Analytics />
-    <link rel="preconnect" href="https://opengraph.githubassets.com" crossorigin />
-    <link rel="dns-prefetch" href="https://opengraph.githubassets.com" />
-
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />

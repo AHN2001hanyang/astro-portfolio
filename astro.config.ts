@@ -36,7 +36,23 @@ export default defineConfig({
 
   integrations: [
     tailwind({ applyBaseStyles: false }),
-    sitemap(), // ✅ 站点地图
+
+    /** ✅ Sitemap：为每个 URL 写入 lastmod，并提升首页优先级 */
+    sitemap({
+      serialize(item) {
+        const now = new Date().toISOString();
+        const isHome =
+          item.url === 'https://ahn2001hanyang.github.io/astro-portfolio/' ||
+          item.url.endsWith('/astro-portfolio/');
+        return {
+          ...item,
+          changefreq: 'weekly',
+          priority: isHome ? 1.0 : 0.7,
+          lastmod: now,
+        };
+      },
+    }),
+
     mdx(),
     icon({
       include: {
